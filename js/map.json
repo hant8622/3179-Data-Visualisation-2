@@ -1,0 +1,76 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 1000,
+    "height": 500,
+    "background": "#f0f0f0",
+    "data": {
+        "url": "data/countries.topojson",
+        "format": {"type": "topojson", "feature": "countries"}
+    },
+    "view": {"stroke": "transparent"},
+    "projection": {"type": "equalEarth"},
+    "layer": [
+        {
+            "transform": [
+            {
+                "calculate": "'Data is not available in ' + datum.properties.NAME",
+                "as": "note"
+            }
+            ],
+            "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "gray"},
+            "encoding": {"tooltip": {"field": "note"}}
+        },
+        {
+            "data": {
+                "url": "data/oceans.topojson",
+                "format": {"type": "topojson", "feature": "oceans"}
+            },
+            "mark": {"type": "geoshape", "fill": "lightcyan"}
+        },
+        {
+            "data": {
+                "url": "data/graticules.topojson",
+                "format": {"type": "topojson", "feature": "graticules"}
+            },
+            "mark": {"type": "geoshape", "fill": null, "stroke": "lightgray"}
+        },
+        {
+            "transform": [
+                {
+                    "lookup": "properties.NAME",
+                    "from": {
+                        "data": {
+                            "url": "data/countries-data.csv"
+                        },
+                        "key": "country",
+                        "fields": ["pop2023", "pop2022"]
+                    }
+                },
+                {
+                    "calculate": "(datum.pop2023 - datum.pop2022) / datum.pop2022 * 100",
+                    "as": "growthRate"
+                },
+                {
+                    "calculate": "datum.growthRate == 0 ? null : datum.growthRate",
+                    "as": "growthRate"
+                }
+            ],
+            "mark": {"type": "geoshape", "stroke": "gray"},
+            "encoding": {
+                "color": {
+                    "field": "growthRate",
+                    "type": "quantitative",
+                    "title": "Growth Rate (%)",
+                    "scale": {
+                        "domain": [-8, -2, -1, 0, 1, 2, 4, 6],
+                        "range": ["#ca0b22", "#fcac64", "#fedd90", "#faf8c1", "#abd6e8", "#75abd0", "#4a74b4", "#420a68"]
+                    }
+                },
+                "tooltip": [
+                    {"field": "properties.NAME", "type": "nominal", "title": "Country"},
+                    {"field": "growthRate", "type": "quantitative", "title": "Population Growth Rate (%)", "format": ",.2f"}
+                ]
+            }
+        }
+    ]
+}
