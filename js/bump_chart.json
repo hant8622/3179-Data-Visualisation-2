@@ -77,7 +77,7 @@
       }
     },    
     {
-      "mark": {"type": "text", "fontSize" : 13, "fontStyle": "italic", "baseline": "middle", "align" : "center", "dx": 15},
+      "mark": {"type": "text", "fontSize" : 13, "fontStyle": "italic", "fontWeight": "normal", "baseline": "middle", "align" : "center", "dx": 15},
       "encoding": {
         "text": {"value": "Forecast Population"},
         "x": {"datum": 2030},
@@ -85,7 +85,7 @@
       }
     },
     {
-      "mark": {"type": "text", "fontSize" : 13, "fontStyle": "italic", "align" : "center"},
+      "mark": {"type": "text", "fontSize" : 13, "fontStyle": "italic",  "fontWeight": "normal", "align" : "center"},
       "encoding": {
         "text": {"value": "New No. 1"},
         "x": {"datum": 2023},

@@ -3,12 +3,35 @@
     "width": 1000,
     "height": 500,
     "background": "#f0f0f0",
+    "view": {"stroke": "transparent"},
     "data": {
         "url": "data/countries.topojson",
         "format": {"type": "topojson", "feature": "countries"}
     },
-    "view": {"stroke": "transparent"},
-    "projection": {"type": "equalEarth"},
+    "params": [
+        {
+            "name": "zoom_level",
+            "value": 180,
+            "bind": {
+                "input": "range",
+                "min": 180,
+                "max": 410,
+                "step": 10,
+                "name": "Zoom: "
+            }
+        },
+        {
+            "name": "center_to",
+            "value": [0, 0],
+            "bind": {
+                "input": "select",
+                "options": [[0, 0], [20, 0], [90, 25], [20, 50], [-100, 25], [150, -30], [-65, -20]],
+                "labels": ["All", "Africa", "Asia", "Europe", "North America", "Oceania", "South America"],
+                "name": "Current Continent: "
+            }
+        }
+    ],
+    "projection": {"type": "equalEarth", "center": { "expr": "center_to" }, "scale": { "expr": "zoom_level" }},
     "layer": [
         {
             "transform": [
@@ -71,6 +94,50 @@
                     {"field": "growthRate", "type": "quantitative", "title": "Population Growth Rate (%)", "format": ",.2f"}
                 ]
             }
+        },
+        {   
+            "data": {
+                "url": "data/countries-data.csv"
+            },
+            "encoding": {
+                "longitude": {"field": "Longitude", "type": "quantitative"},
+                "latitude": {"field": "Latitude", "type": "quantitative"}
+            },
+            "layer": [ 
+                {
+                    "transform": [
+                        {
+                            "calculate": "(datum.pop2023 - datum.pop2022) / datum.pop2022 * 100",
+                            "as": "growthRate"
+                        },
+                        {
+                            "calculate": "datum.growthRate == 0 ? null : datum.growthRate",
+                            "as": "growthRate"
+                        }
+                    ],
+                    "mark": {
+                        "type": "text",
+                        "align": "center",
+                        "color": "black",
+                        "fontStyle": "italic",
+                        "fontSize": 12
+                    },
+                    "encoding": {
+                        "text": {
+                            "condition": {
+                                "test": "datum.country == 'Malaysia' || datum.country == 'India' || datum.country == 'Australia' || datum.country == 'China' || datum.country == 'United States' || datum.country == 'Indonesia' || datum.country == 'Pakistan'",
+                                "field": "country",
+                                "type": "nominal"
+                            },
+                            "value": ""
+                        },
+                        "tooltip": [
+                            {"field": "country", "type": "nominal", "title": "Country"},
+                            {"field": "growthRate", "type": "quantitative", "title": "Population Growth Rate (%)", "format": ",.2f"}
+                        ]
+                    }
+                }
+            ]
         }
     ]
 }
