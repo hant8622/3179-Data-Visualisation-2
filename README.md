@@ -7,5 +7,5 @@ View it at https://hant8622.github.io/3179-Data-Visualisation-2/
 Vega-Lite: https://github.com/vega/vega-lite
 
 ## Datasets Used
-Global Population: https://www.kaggle.com/datasets/rajkumarpandey02/2023-world-population-by-country?datasetId=3346108&sortBy=voteCount
+Global Population: https://www.kaggle.com/datasets/rajkumarpandey02/2023-world-population-by-country?datasetId=3346108&sortBy=voteCount  
 Global Demographic Indicators: https://www.kaggle.com/datasets/nelgiriyewithana/countries-of-the-world-2023
